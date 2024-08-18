@@ -1,40 +1,40 @@
 package list;
 
-public class Node {
-	private Node next;
-	private Object data;
+public class Node<E> {
+	private Node<E> next;
+	private E data;
 
 	public Node() {
 	}
 
-	public Node(Node next, Object data) {
+	public Node(Node<E> next, E data) {
 		this.next = next;
 		this.data = data;
 	}
 
-	public Node(Node next) {
+	public Node(Node<E> next) {
 		this.next = next;
 		this.data = null;
 	}
 
-	public Node(Object data) {
+	public Node(E data) {
 		this.data = data;
 		this.next = null;
 	}
 
-	public Node getNext() {
+	public Node<E> getNext() {
 		return next;
 	}
 
-	public void setNext(Node next) {
+	public void setNext(Node<E> next) {
 		this.next = next;
 	}
 
-	public Object getData() {
+	public E getData() {
 		return data;
 	}
 
-	public void setData(Object data) {
+	public void setData(E data) {
 		this.data = data;
 	}
 

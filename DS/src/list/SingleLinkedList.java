@@ -1,15 +1,15 @@
 package list;
 
-public class SingleLinkedList {
-	private Node head;
-	private Node tail;
+public class SingleLinkedList<E> {
+	private Node<E> head;
+	private Node<E> tail;
 	private int size = 0;
 
 	public SingleLinkedList() {
 
 	}
 
-	public SingleLinkedList(Node head, Node tail) {
+	public SingleLinkedList(Node<E> head, Node<E> tail) {
 		this.head = head;
 		this.tail = tail;
 	}
@@ -18,126 +18,138 @@ public class SingleLinkedList {
 		return size;
 	}
 
-	public Object getFirst() {
+	public E getFirst() {
 		return head.getData();
 	}
 
-	public Object getLast() {
+	public E getLast() {
 		return tail.getData();
 	}
 
-	public Object get(int index) {
-		Node current = head;
+	public E get(int index) {
 		if (index < 0 || index > size) {
 			return null;
 		}
 		if (index == 0) {
-			return head;
+			return getFirst();
 		}
 		if (index == size - 1) {
-			return tail;
+			return getLast();
 		}
-
+		Node<E> current = head;
 		for (int i = 0; i < index; i++) {
 			current = current.getNext();
 		}
-		return current;
+		return current.getData();
 	}
 
-	public Object removeFirst() {
+	public E removeFirst() {
 		if (size == 0) {
 			return null;
 		}
-		Node temp = head; // temp là viết tắt của tempotary (tạm thời)
+		Node<E> temp = head; // temp là viết tắt của tempotary (tạm thời)
 		head = head.getNext();
 		size--;
 		return temp.getData();
 	}
 
-	public Object removeLast() {
+	public E removeLast() {
 		if (size == 0) {
 			return null;
 		}
-		Node temp = head;
-		for (int i = 1; i < getSize() - 1; i++) {
-			temp = temp.getNext();
+		if (size == 1) {
+			Node<E> temp = head;
+			head = tail = null;
+			size = 0;
+			return temp.getData();
 		}
-		temp.setNext(null);
+		Node<E> current = head;
+		for (int i = 1; i < size - 1; i++) {
+			current = current.getNext();
+		}
+		Node<E> temp = tail;
+		tail = current;
+		tail.setNext(null);
 		size--;
 		return temp.getData();
 	}
 
-	public Object remove(int index) {
+	public E remove(int index) {
 		if (index < 0 || index >= size) {
 			return null;
+		} else if (index == 0) {
+			return removeFirst();
+		} else if (index == size - 1) {
+			return removeLast();
+		} else {
+			Node<E> previous = head;
+			for (int i = 1; i < index; i++) {
+				previous = previous.getNext();
+			}
+			Node<E> current = previous.getNext();
+			previous.setNext(current.getNext());
+			size--;
+			return current.getData();
 		}
-		if (size == 0) {
-			return null;
-		}
-		Node temp = head;
-		for (int i = 1; i < index - 1; i++) {
-			temp = temp.getNext();
-		}
-		temp.setNext(null);
-		size--;
-		return temp.getData();
+
 	}
 
-	public void addFirst(Node data) {
-		if (size == 0) {
-			head = tail = data;
-		} else {
-			Node temp = head;
-			head = data;
-			head.setNext(temp);
+	public void addFirst(E data) {
+		Node<E> newNode = new Node<E>(data);
+		newNode.setNext(head);
+		head = newNode;
+		if (size == 0) { // the new node is the only node in list
+			tail = head;
 		}
 		size++;
 	}
 
-	public void addLast(Node data) {
+	public void addLast(E data) {
+		Node<E> newNode = new Node<E>(data);
 		if (size == 0) {
-			head = tail = data;
+			head = tail = newNode;
 		} else {
-			Node currentNode = head;
-			for (int i = 1; i < size; i++) {
+			tail.setNext(newNode);
+			tail = tail.getNext();
+		}
+		size++;
+	}
+
+	public void add(int index, E data) {
+		if (index == 0)
+			addFirst(data);
+		else if (index >= size)
+			addLast(data);
+		else {
+			Node<E> currentNode = head;
+			for (int i = 1; i < index; i++) {
 				currentNode = currentNode.getNext();
 			}
-			currentNode.setNext(data);
+			Node<E> temp = currentNode.getNext();
+			currentNode.setNext(new Node<E>(data));
+			(currentNode.getNext()).setNext(temp);
+			size++;
 		}
-		size++;
-	}
-
-	public void add(int index, Node data) {
-		if (index < 0 || index >= size) {
-			throw new IndexOutOfBoundsException("Index" + index + "out of bound");
-		}
-		Node currentNode = head;
-		for (int i = 1; i < index; i++) {
-			currentNode = currentNode.getNext();
-		}
-		Node temp = currentNode.getNext();
-		data.setNext(temp);
-		currentNode.setNext(data);
-		size++;
 
 	}
 
 	private class LinkedListIterator implements Iterator {
-		private Node currentNode;
-		
+		private Node<E> currentNode;
+
 		public LinkedListIterator() {
 			currentNode = head;
 		}
+
 		public boolean hasNext() {
-			return currentNode.getNext() != null;
+			return currentNode != null;
 		}
 
-		public Node next() {
-			Node temp = currentNode;
+		public E next() {
+			E data = currentNode.getData();
 			currentNode = currentNode.getNext();
-			return temp;
+			return data;
 		}
-		
+
 	}
 
 	public LinkedListIterator iterator() {
