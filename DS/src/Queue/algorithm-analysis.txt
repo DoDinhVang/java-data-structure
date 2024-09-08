@@ -1,0 +1,14 @@
+- IQueue ADT: equeue(),dequeue(), first(), size(), isEmpty();
+- Class java.util.Queue: add() || orfer(), remove() || poll(), element() || peek(), size(), isEmpty();
+	+ add(): if (queue is full) return throw exception;
+	+ offer(): if (queue is full) return false;	
+	+ remove(): if (queue is empty) return throw exception;
+	+ poll(): if (queue is empty) return null;
+	+ element(): if (queue is empty) return throw exception;
+	+ peek(): if (queue is empty) return null;
+- Running Time
+	+ equeue: O(1);
+	+ dequeue: O(1);
+	+ first: O(1);
+	+ size: O(1);
+	+ isEmpty: O(1);

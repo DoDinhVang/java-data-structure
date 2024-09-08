@@ -1,0 +1,11 @@
+- IStack ADT: size(), isEmpty(), push(e), pop(), top();
+- Class java.util.Stack: size(), empty(), push(e), pop(), peek();
+- Running Time
+	+ size: O(1);
+	+ isEmpty: O(1);
+	+ push: O(1);
+	+ pop: O(1);
+	+ top: O(1);
+
+	
+	
